@@ -25,10 +25,92 @@ body{
     }
   }
 }
-
+.bellBtn{
+  button{
+      padding: 12px;
+      background-color: #F6FAFF;
+      border: 0;
+      .badge{
+        background-color: var(--primary);
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        position: absolute;
+        top:6px;
+        right: 6px;
+      }
+      &:hover {
+        background-color: var(--blue-600);
+        img{
+          filter: invert(1);
+        }
+        .badge{
+          background-color: #fff;
+        }
+        .f{
+          fill: #fff;
+        }
+      }
+      &:enabled:focus {
+        outline: none;
+        box-shadow: none;
+      }
+  }
+}
+.commonDropdown{
+  &.two{
+    .p-dropdown{
+      width: 200px;
+    }
+  }
+  .p-dropdown{
+    width: 130px;
+    border: 1.33px solid var(--primary);
+    span.p-element{
+      padding: 6px 8px;
+    }
+  }
+}
+p-calendar{
+  &.white{
+    .p-calendar{
+    .p-inputtext {
+      margin-right: -30px;
+      width: 100%;
+      border-bottom: 1.33px solid white;
+      background-color: transparent;
+      color: #fff;
+    }
+    }
+  }
+  .p-calendar{
+    width: 100%;
+    .p-inputtext{
+      border:0;
+      width: 100%;
+      border-radius: 0;
+      border-bottom: 1.33px solid var(--primary);
+    }
+  }
+}
+.countrySelector{
+  .p-dropdown{
+      width: 180px;
+      border: 0;
+      .p-element{}
+    }
+}
 @font-face {
   font-family: 'Nexa';
   src: url('./assets/fonts/NexaRegular.otf');
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-Regular.ttf');
+}
+@font-face {
+  font-family: 'Poppins-Semibold';
+  src: url('./assets/fonts/Poppins-SemiBold.ttf');
 }
 
 

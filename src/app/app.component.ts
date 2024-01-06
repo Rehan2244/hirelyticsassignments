@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component, ViewChild } from '@angular/core';
 import {Chart} from 'chart.js'
-import {MenuItem} from 'primeng/api';
 const green='#48BB79'
 const blue='#083F88'
 @Component({
@@ -10,22 +10,67 @@ const blue='#083F88'
 })
 export class AppComponent {
   title = 'client';
+  datePickerFormat: string = 'yyyy-MM-dd';
+  @ViewChild('calendar1') calendar1: any;
+  @ViewChild('calendar2') calendar2: any;
+  constructor(
+
+  ){}
   ngAfterViewInit(){
     this.createChart();
   }
   onChange(e:any){
     console.log('e',e.value)
     console.log(this.selectedLang)
-    this.selectedLang=e.value
+    this.selectedLang={
+      label:e.value,
+      value:e.value
+    }
   }
-  selectedLang: any;
-  flagHu: string = './assets/img/flags/flag_hu.svg';
-  flagEn: string = './assets/img/flags/flag_en.svg';
+  dateRange:any[]=[]
+  dateRange2:any[]=[]
+  selectedLang: any={
+    label:'Eng (UK)'
+  };
+  flagEn: string = './assets/images/United.png';
+  flagHu: string = './assets/images/United.png';
   langOptions: any[] = [
-      {label: 'magyar', value: 'hu'},
-      {label: 'english', value: 'en'}  
+      {label: 'Eng (US)', value: 'Eng (US)'},
+      {label: 'Eng (UK)', value: 'Eng (UK)'}  
   ];
 
+  checkDate(cl:any,dateRange:any){
+    if(dateRange[1]!=null){
+      cl.hideOverlay();
+    }
+  }
+  selectedDate:any;
+  weeklyMonthlyDD=[
+    {label:'Weekly',value:'Weekly'},
+    {label:'Monthly',value:'Monthly'},
+  ]
+  weeklyMonthlyDD2=[
+    {label:'This Week',value:'This Week'},
+    {label:'This Month',value:'This Month'},
+  ]
+  selectedTime:any={
+    label:'Monthly'
+  }
+  selectedTime2:any={
+    label:'This Week'
+  }
+  onChangeTime(e:any){
+    this.selectedTime={
+      label:e.value,
+      value:e.value
+    }
+  }
+  onChangeTime2(e:any){
+    this.selectedTime2={
+      label:e.value,
+      value:e.value
+    }
+  }
   display:boolean=false
   className='dashboard';
   appliedJobData={
@@ -35,7 +80,7 @@ export class AppComponent {
         backgroundColor: '#083F88',
         borderRadius:2.5,
         borderSkipped:false,
-        data: [65, 59, 80, 81, 56, 55, 40]
+        data: [12000, 17000, 21000, 25000, 22000, 20000, 17000]
       },{
         label: 'Registered on Portal',
         backgroundColor: '#48BB79',
@@ -62,18 +107,22 @@ export class AppComponent {
     scales: {
         x: {
             ticks: {
-                color: '#000'
+                color: '#7B91B0',
+                callback: function(val:any, index:any) {
+                  // Hide every 2nd tick label
+                  return val>0?(val/1000)+'K':0;
+                },
             },
             grid: {
                 display:false
             },
             border:{
               display:false
-            }
+            },
         },
         y: {
             ticks: {
-                color: '#000'
+                color: '#7B91B0'
             },
             grid: {
                 display:false
@@ -146,11 +195,14 @@ appliedJobData3={
   datasets: [{
     label:'Invited',
     backgroundColor: '#FF8A00',
-    data: [10]
+    data: [10],
+    borderRadius:[{ topLeft: 50, topRight: 0, bottomLeft: 50, bottomRight: 0 }]
 },{
   label:'Pending',
   backgroundColor: '#C2DCFF',
-  data: [30]
+  data: [30],
+  
+  
 },{
   label:'Selected',
   backgroundColor: '#48BB79',
@@ -158,13 +210,17 @@ appliedJobData3={
 },{
   label:'Rejected',
   backgroundColor: '#E74C3C',
-  data: [30]
+  data: [30],
+  borderRadius:[
+    { topLeft: 0, topRight: 50, bottomLeft: 0, bottomRight: 50 }
+  ],
 },
 ],
 };
 appliedJobOptios3={
   indexAxis: 'y',
   barPercentage:1,
+  borderSkipped:false,
   plugins: {
       legend: {
           labels: {
@@ -205,11 +261,59 @@ appliedJobOptios3={
   }
 };
 
+scoreDistributionData={
+  labels:['1 to 10','10 to 20','21 to 30','31 to 40','41 to 50','51 to 60','61 to 70','71 to 100'],
+  datasets:[{
+      label: 'Applied for Jobs',
+      backgroundColor:'#083F88',
+      barThickness:30,
+      data: [60, 80]
+    }
+  ],
+}
+scoreDistributionOption ={
+  indexAxis: 'x',
+  plugins: {
+      legend: {
+          display:false
+      },
+  },
+  scales: {
+      y: {
+          grid: {
+              display:true
+          },
+          border:{display:false},
+          suggestedMax: 100,
+          ticks: {
+            stepSize:20,
+            padding: 26,
+            color: '#000',
+            font:{
+              weight:800,
+            },
+          },
+
+      },
+      x: {
+        grid: {
+            display:false
+        },
+        ticks: {
+          stepSize:20,
+          color: '#000',
+          font:{
+            weight:800,
+          },
+        }
+    },
+  }
+}
   hiringCompanies=[
-    {name:'Emarates Corporation',image:''},
-    {name:'Yahoo',image:''},
-    {name:'Emarates Corporation',image:''},
-    {name:'Yahoo',image:''}
+    {name:'Emarates Corporation',image:'./assets/images/emirates.png'},
+    {name:'Yahoo',image:'./assets/images/yahoo.png'},
+    {name:'Emarates Corporation',image:'./assets/images/emirates.png'},
+    {name:'Yahoo',image:'./assets/images/yahoo.png'}
   ]
   basicData={labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
   datasets: [
@@ -245,11 +349,11 @@ appliedJobOptios3={
       const xCoor = meta.data[0].x;
       const yCoor = meta.data[0].y+5;
       const perc = chart.data.datasets[0].data[0] / meta.total * 101;
-      ctx.fillStyle='#f00'
+      ctx.fillStyle='#444A6D'
       ctx.save();
       ctx.textAlign = 'center';
       ctx.font = 'bold 16px sans-serif';
-      ctx.fillText(perc.toFixed(2) + '%', xCoor, yCoor);
+      ctx.fillText('100', xCoor, yCoor);
       ctx.restore();
     },
   };
@@ -307,7 +411,9 @@ appliedJobOptios3={
       this.chart = new Chart("MyChart", {
         type: 'doughnut', //this denotes tha type of chart,
         plugins:[this.innerLabel],
+
         data: {// values on X-Axis
+          
           labels: ['New Companies '+100, 'Old Companies '+20 ],
           datasets: [{
             label: 'My First Dataset',
@@ -319,25 +425,11 @@ appliedJobOptios3={
           }],
         },
         options: {
-          scales:{},
-          elements:{
-            
-          },
-          aspectRatio:2.5,
+          responsive:true,
           plugins: {
             legend:{
               display:false
             },
-            title: {
-              display: true,
-              text: "Reported Fault Allocation",
-              color: "#D6001C",
-                  font: {
-                      family: "AvenirNextLTW01-Regular",
-                      size: 16,
-                      style:'normal'
-                  }
-              }
         }
       }
       });

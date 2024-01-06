@@ -11,6 +11,8 @@ import { ChartModule } from 'primeng/chart';
 import { RippleModule } from 'primeng/ripple';
 import {DropdownModule} from 'primeng/dropdown'
 import { FormsModule } from '@angular/forms';
+import {BadgeModule} from 'primeng/badge'
+import {CalendarModule} from 'primeng/calendar';
 @NgModule({
   declarations: [
     AppComponent
@@ -24,7 +26,9 @@ import { FormsModule } from '@angular/forms';
     ChartModule,
     RippleModule,
     DropdownModule,
-    FormsModule
+    FormsModule,
+    BadgeModule,
+    CalendarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
