@@ -1,0 +1,34 @@
+/* You can add global styles to this file, and also import other style files */
+body{
+    margin: 0;
+}
+:root{
+    --primary:#224471
+}
+
+
+.primeBtn {
+  button {
+    background-color: var(--primary);
+
+    &:active {
+      background-color: var(--blue-900) !important;
+    }
+
+    &:hover {
+      background-color: var(--blue-600);
+    }
+
+    &:enabled:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+}
+
+@font-face {
+  font-family: 'Nexa';
+  src: url('./assets/fonts/NexaRegular.otf');
+}
+
+

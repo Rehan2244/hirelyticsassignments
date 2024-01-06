@@ -1,0 +1,142 @@
+<div style="display: flex;position: relative;">
+<div class="leftContainer">
+  <div class="topLeftDiv">
+    <img style="align-self: center;" class="logo" src="./assets/images/logo.png" alt="">
+    <div class="menuBtn" [class.isActive]="className=='dashboard'" (click)="className='dashboard'">
+      <img src="./assets/images/graphIcon.svg" alt="">
+      <span>Dashboard</span>
+    </div>
+    <div class="menuBtn" [class.isActive]="className=='sales'" (click)="className='sales'">
+      <img src="./assets/images/graphLineInvert.svg" alt="">
+      <span>Sales Report</span>
+    </div>
+    <div class="menuBtn" [class.isActive]="className=='message'"  (click)="className='message'">
+      <img src="./assets/images/message.svg" alt="">
+      <span>Messages</span>
+    </div>
+  </div>
+  <div class="bottomLeftDiv">
+    <div class="menuBtn">
+      <img src="./assets/images/setting.svg" alt="">
+      <span>Settings</span>
+    </div>
+    <div class="menuBtn">
+      <img src="./assets/images/signOut.svg" alt="">
+      <span>Sign Out</span>
+    </div>
+  </div>
+  
+</div>
+<div style="transition:0.2s;flex:1">
+  <div class="rightContainer">
+    <div class="header">
+      <span class="dashboardText">Dashboard</span>
+      <div style="display: flex;">
+      <div>
+          <p-dropdown [options]="langOptions" [(ngModel)]="selectedLang" placeholder="Select a City" optionLabel="label" optionValue="value" (onChange)="onChange($event)">
+            <ng-template pTemplate="selectedItem">
+              <div class="flex-row" *ngIf="selectedLang">
+                <!-- <img class="lang-change-img" [src]="selectedLang.label == 'magyar' ? flagHu : flagEn" alt=""> -->
+                <div class="lang-change-option-text selected-lang center">{{selectedLang}}</div>
+              </div>
+            </ng-template>
+            <ng-template let-country pTemplate="item">
+              <div class="flex-row">
+                <!-- <img class="lang-change-img" [src]="country.label == 'magyar' ? flagHu : flagEn" alt=""> -->
+                <div class="lang-change-option-text center">{{country.label}}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+        </div>
+        <div>
+          <p-button>
+            <img src="./assets/images/bell.svg" />
+          </p-button>
+        </div>
+        <div style="display: flex;">
+          <div>
+            <div>Bahaa H. Badawiyeh</div>
+            <div></div>
+          </div>
+          <img src="assets/images/profile.png" alt="">
+        </div>
+      </div>
+    </div>
+    <div class="rightSubContainer">
+      <div class="candidateOverview">
+        <div style="flex:0.3" style="display: flex;flex-direction: column;justify-content: space-between;">
+          <div>
+            <div class="cadidateOvText">Candidate's Overview</div>
+            <div class="ovLastWeekText">Overview of Latest Week</div>
+          </div>
+          <div>
+            <div class="ovNumbers">16,890</div>
+            <div class="ovLightNumbers">Registered on Portal</div>
+            <div class="ovNumbers" style="margin-top: 32px;">6,890</div>
+            <div class="ovLightNumbers">Applied for Jobs</div>
+          </div>
+          <p-button [outlined]="false" class="primeBtn">Last Month Summary</p-button>
+        </div>
+        <div style="flex:1;display: flex;flex-direction: column;gap: 18px;" >
+          <div style="align-self: flex-end;">
+            <p-dropdown></p-dropdown>
+          </div>
+          <div style="padding: 20px 36px;border:0.5px solid #7B91B0C4;border-radius: 10px">
+            <p-chart height="300" [responsive]="true" type="bar" [data]="appliedJobData" [options]="appliedJobOptios"></p-chart>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex;width:100%;margin-top: 40px;gap: 14px; ">
+        <div class="mapBubbles" style="flex:0.7">
+          <h2>Users Location</h2>
+          <div>
+            <h1>Map</h1>
+            <h1>Map</h1>
+            <h1>Map</h1>
+            <h1>Map</h1>
+          </div>
+        </div>
+        <div class="bluebgChart" style="flex:0.3;border-radius: 12.28px;padding: 32px;color: #fff">
+          <div >Candidates Statistics</div>
+          <p-chart style="height: 100%;" height="300" [responsive]="true" type="bar" [data]="appliedJobData2" [options]="appliedJobOptios2"></p-chart>
+          <div style="display: flex;justify-content: space-between;">
+            <div>351</div>
+            <div>Jan-10</div>
+          </div>
+        </div>
+      </div>
+      <div class="candidateStatus">
+        <div style="font-family: 'Nexa';font-size: 26px;">Candidate's Status</div>
+        <div style="display: flex;width: 100%;padding-bottom: 60px;border-bottom: 1px solid #E0DFE4;margin-top: 32px;">
+          <div style="flex:1">
+            <p-chart [responsive]="true" height="70" type="bar" [data]="appliedJobData3" [options]="appliedJobOptios3"></p-chart>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex;" >
+        <div class="topHiringCompanies" style="display: flex;flex-direction: column;gap: 14px;">
+          <div style="display: flex;">
+            <h1>Top Hiring Companies</h1>
+            <h4>This Week</h4>
+          </div>
+          <div *ngFor="let item of hiringCompanies" class="hiringCard">
+            <div >
+              {{item.name}}
+            </div>
+          </div>
+        </div>
+        <div style="flex:1">
+          <h1>Companies Hiring Statistics</h1>
+          <div style="position: relative;width: 100%;">
+            <canvas  id="MyChart"  ></canvas>
+            <!-- <div class="donutOverlay">50%</div> -->
+          </div>
+          <div >
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
