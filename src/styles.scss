@@ -97,7 +97,14 @@ p-calendar{
   .p-dropdown{
       width: 180px;
       border: 0;
-      .p-element{}
+      chevrondownicon{
+        svg{
+          width: 10px;
+          height: 10px;
+          stroke: #6b7280;
+          stroke-width: 1px;
+        }
+      }
     }
 }
 @font-face {

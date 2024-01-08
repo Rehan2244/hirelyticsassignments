@@ -98,18 +98,21 @@
           </p-dropdown>
           </div>
           <div style="padding: 20px 36px;border:0.5px solid #7B91B0C4;border-radius: 10px">
-            <p-chart height="300" [responsive]="true" type="bar" [data]="appliedJobData" [options]="appliedJobOptios"></p-chart>
+            <div style="display: flex;align-items:center;gap:43px;margin-bottom: 20px;">
+              <div [style.text-decoration]="legend.hidden?'line-through':'unset'" (click)="setLegend(idx)" *ngFor="let legend of appliedJobData.datasets;let idx=index" style="font-size: 15px; display: flex;gap:10px;align-items: center;"><div style="width: 14px;height: 14px;border-radius: 50px" [style.background-color]="legend.backgroundColor" > </div><div>{{legend.label}}</div></div>
+            </div>
+            <p-chart #chart height="300" [responsive]="true" type="bar" [data]="appliedJobData" [options]="appliedJobOptios"></p-chart>
           </div>
         </div>
       </div>
       <div style="display: flex;width:100%;margin-top: 40px;gap: 14px; ">
         <div class="mapBubbles" style="flex:0.7">
           <h2>Users Location</h2>
-          <div>
-            <h1>Map</h1>
-            <h1>Map</h1>
-            <h1>Map</h1>
-            <h1>Map</h1>
+          <div style="display: flex;">
+            <div>
+              <img src="./assets/images/zoomBtns.png" alt="">
+            </div>
+            <img src="./assets/images/map.png" alt="">
           </div>
         </div>
         <div class="bluebgChart" style="flex:0.3;border-radius: 12.28px;padding: 32px;color: #fff">
@@ -130,8 +133,14 @@
       <div class="candidateStatus">
         <div style="font-family: 'Nexa';font-size: 26px;font-weight: 700;">Candidate's Status</div>
         <div style="display: flex;width: 100%;padding-bottom: 60px;border-bottom: 1px solid #E0DFE4;margin-top: 32px;">
-          <div style="flex:1">
-            <p-chart [responsive]="true" height="70" type="bar" [data]="appliedJobData3" [options]="appliedJobOptios3"></p-chart>
+          <div style="flex:1;display: flex;align-items: center;">
+            <div style="flex:0.16;display: flex;flex-wrap: wrap;row-gap: 10px;">
+              <div (click)="setDataForUserStatus(idx)" *ngFor="let item of appliedJobData3.datasets;let idx=index" style="display: flex;align-items: center;gap:3px;width: 50%;font-size: 14px;">
+                <div style="height: 14px;width: 14px;" [style.background-color]="item.backgroundColor"></div>
+                <div [style.text-decoration]="item.hidden?'line-through':'unset'">{{item.label}}</div>
+              </div>
+            </div>
+            <p-chart #candidatestatuschart [style]="{'flex':1}" [responsive]="true" height="70" type="bar" [data]="appliedJobData3" [options]="appliedJobOptios3"></p-chart>
           </div>
         </div>
         <div style="margin-top: 60px;">
@@ -184,7 +193,14 @@
         <div class="comapniesHiringStatistics">
           <div style="font-size: 26px;font-weight: 700;font-family: 'Nexa';">Companies Hiring Statistics</div>
           <div style="position: relative;width: 100%;height: 100%;">
-            <canvas  id="MyChart"  ></canvas>
+            <div>
+              <canvas  id="MyChart"  ></canvas>
+              <div style="display: flex;align-items: center;justify-content: space-evenly;margin-bottom: 20px;">
+                <div style="display: flex;align-items: center;gap:12px" *ngFor="let donutlegend of donutchart?.data.labels;let idx=index" >
+                   <div style="height:13px;width: 13px;border-radius: 50%;" [style.background-color]="donutchart?.data?.datasets[0].backgroundColor[idx]"></div> <div>{{donutlegend}}</div>
+                </div>
+              </div>
+            </div>
             <p-calendar #calendar2 [(ngModel)]="dateRange2" (onSelect)="checkDate(calendar2,dateRange2)" [readonlyInput]="true" [dateFormat]="'M dd'"selectionMode="range" [iconDisplay]="'input'" [showIcon]="true" inputId="templatedisplay">
               <ng-template pTemplate="inputicon" let-clickCallBack="clickCallBack">
                   <img src="./assets/images/calendarInvert.svg" style="position: relative;right: 40px" (click)="clickCallBack($event)" alt="">

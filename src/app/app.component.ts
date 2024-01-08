@@ -1,6 +1,6 @@
-import { DatePipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import {Chart} from 'chart.js'
+import { UIChart } from 'primeng/chart';
 const green='#48BB79'
 const blue='#083F88'
 @Component({
@@ -13,6 +13,8 @@ export class AppComponent {
   datePickerFormat: string = 'yyyy-MM-dd';
   @ViewChild('calendar1') calendar1: any;
   @ViewChild('calendar2') calendar2: any;
+  @ViewChild("chart") chartRef: any;
+  @ViewChild("candidatestatuschart") chartRefCandidate: any;
   constructor(
 
   ){}
@@ -73,6 +75,24 @@ export class AppComponent {
   }
   display:boolean=false
   className='dashboard';
+
+  ngOnChanges(changes: any): void {
+    console.log('Changes are',changes)
+    if (changes.inputData.currentValue) {
+      // update this.data here
+
+     // then chart is getting updated
+      setTimeout(() => {
+        this.chartRef.reinit();
+      }, 100);
+    }
+  }
+
+  setLegend(id:any){
+    this.appliedJobData.datasets[id].hidden = !this.appliedJobData.datasets[id].hidden
+    this.chartRef.refresh()
+
+  }
   appliedJobData={
     labels:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
     datasets:[{
@@ -80,13 +100,15 @@ export class AppComponent {
         backgroundColor: '#083F88',
         borderRadius:2.5,
         borderSkipped:false,
-        data: [12000, 17000, 21000, 25000, 22000, 20000, 17000]
+        data: [12000, 17000, 21000, 25000, 22000, 20000, 17000],
+        hidden:false
       },{
         label: 'Registered on Portal',
         backgroundColor: '#48BB79',
         borderRadius:2.5,
         borderSkipped:false,
-        data: []
+        data: [],
+        hidden:false
       }
     ],
   }
@@ -94,22 +116,27 @@ export class AppComponent {
   appliedJobOptios={
     indexAxis: 'y',
     plugins: {
-        legend: {
-            labels: {
-                color: '#000',
-                usePointStyle: true,
-            },
-            position: 'top',
-            align:'start',
-            pointStyle:'circle'
-        },
+      legend: {
+        display: false,
+      },
+        // legend: {
+        //     labels: {
+        //         color: '#000',
+        //         usePointStyle: true,
+        //     },
+        //     padding:{
+        //       bottom:100
+        //     },
+        //     position: 'top',
+        //     align:'start',
+        //     pointStyle:'circle'
+        // },
     },
     scales: {
         x: {
             ticks: {
                 color: '#7B91B0',
                 callback: function(val:any, index:any) {
-                  // Hide every 2nd tick label
                   return val>0?(val/1000)+'K':0;
                 },
             },
@@ -190,23 +217,48 @@ appliedJobOptios2={
       },
   }
 };
+setBorderRadius(){
+  console.log('Border Radius',this.appliedJobData3.datasets)
+  for(let i=0;i<this.appliedJobData3.datasets.length;i++){
+    if(!this.appliedJobData3.datasets[i].hidden){
+      //@ts-ignore
+      console.log('Radius',this.appliedJobData3.datasets[i].borderRadius[0])
+      this.appliedJobData3.datasets[i].borderRadius = [{...this.appliedJobData3.datasets[i].borderRadius[0],topLeft:50,bottomLeft:50}]
+      break;
+    }
+  }
+  for(let i=this.appliedJobData3.datasets.length-1;i>=0;i--){
+    if(!this.appliedJobData3.datasets[i].hidden){
+      //@ts-ignore
+      console.log('Radius',this.appliedJobData3.datasets[i].borderRadius)
+      this.appliedJobData3.datasets[i].borderRadius = [{...this.appliedJobData3.datasets[i].borderRadius[0],topRight:50,bottomRight:50}]
+      break;
+    }
+  }
+  this.chartRefCandidate.refresh()
+}
 appliedJobData3={
   labels:['Invited'],
   datasets: [{
     label:'Invited',
     backgroundColor: '#FF8A00',
     data: [10],
-    borderRadius:[{ topLeft: 50, topRight: 0, bottomLeft: 50, bottomRight: 0 }]
+    borderRadius:[{ topLeft: 50, topRight: 0, bottomLeft: 50, bottomRight: 0 }],
+    hidden:false
 },{
   label:'Pending',
   backgroundColor: '#C2DCFF',
   data: [30],
-  
+  borderRadius:[{ topLeft: 0, topRight: 0, bottomLeft: 0, bottomRight: 0 }],
+  hidden:false
   
 },{
   label:'Selected',
   backgroundColor: '#48BB79',
-  data: [30]
+  data: [30],
+  borderRadius:[{ topLeft: 0, topRight: 0, bottomLeft: 0, bottomRight: 0 }],
+  hidden:false
+
 },{
   label:'Rejected',
   backgroundColor: '#E74C3C',
@@ -214,6 +266,8 @@ appliedJobData3={
   borderRadius:[
     { topLeft: 0, topRight: 50, bottomLeft: 0, bottomRight: 50 }
   ],
+  hidden:false
+
 },
 ],
 };
@@ -223,14 +277,7 @@ appliedJobOptios3={
   borderSkipped:false,
   plugins: {
       legend: {
-          labels: {
-              color: '#000',
-              usePointStyle: true,
-              display:false
-          },
-          position: 'left',
-          align:'center',
-          pointStyle:'circle',
+        display:false
       },
   },
   scales: {
@@ -309,38 +356,17 @@ scoreDistributionOption ={
     },
   }
 }
+setDataForUserStatus(idx:any){
+  this.appliedJobData3.datasets[idx].hidden = !this.appliedJobData3.datasets[idx].hidden
+  this.setBorderRadius()
+  this.chartRefCandidate.refresh()
+}
   hiringCompanies=[
     {name:'Emarates Corporation',image:'./assets/images/emirates.png'},
     {name:'Yahoo',image:'./assets/images/yahoo.png'},
     {name:'Emarates Corporation',image:'./assets/images/emirates.png'},
     {name:'Yahoo',image:'./assets/images/yahoo.png'}
   ]
-  basicData={labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-  datasets: [
-      {
-          label: 'First Dataset',
-          data: [100,10],
-          plugins: {
-            doughnutlabel: {
-              labels: [
-                {
-                  text: 'The title',
-                  font: {
-                    size: '60'
-                  }
-                },
-                {
-                  text: 1001,
-                  font: {
-                    size: '50'
-                  },
-                  color: 'grey'
-                }
-              ]
-            }
-          }
-      }
-  ]}
   innerLabel = {
     id: 'innerLabel',
     afterDatasetDraw(chart:any, args:any, pluginOptions:any) {
@@ -405,15 +431,14 @@ scoreDistributionOption ={
         ]
       }
     }}
-    chart:any
+    donutchart:any
     createChart(){
 
-      this.chart = new Chart("MyChart", {
+      this.donutchart = new Chart("MyChart", {
         type: 'doughnut', //this denotes tha type of chart,
         plugins:[this.innerLabel],
 
-        data: {// values on X-Axis
-          
+        data: {// values on X-Axis  
           labels: ['New Companies '+100, 'Old Companies '+20 ],
           datasets: [{
             label: 'My First Dataset',
@@ -421,17 +446,30 @@ scoreDistributionOption ={
             backgroundColor: [blue,green
             ],
             borderWidth:0,
-            hoverOffset: 4
+            hoverOffset: 4,
           }],
+          
         },
         options: {
+          layout: {
+            padding: {
+              left:70,
+              right:70
+            }
+          },
           responsive:true,
           plugins: {
             legend:{
-              display:false
+              display:false,
+              position:'bottom',
+              labels:{
+                usePointStyle: true,
+                pointStyle:'circle'
+              },
             },
         }
       }
       });
+      console.log('chart',this.donutchart.data.datasets)
     }
 }
